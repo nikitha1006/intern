@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Innovative Multi-Field Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #e67e22;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 8px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .form-row > .form-group {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .submit-btn {
+      display: block;
+      background: #e67e22;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #d35400;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>🔐 Innovative User Registration Form</h2>
+    <form id="mainForm" onsubmit="return validateForm()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name *</label>
+          <input type="text" id="fname" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name *</label>
+          <input type="text" id="lname" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" />
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Gender *</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="Male" /> Male</label>
+          <label><input type="radio" name="gender" value="Female" /> Female</label>
+          <label><input type="radio" name="gender" value="Other" /> Other</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <select id="country">
+          <option value="">--Select--</option>
+          <option>India</option>
+          <option>USA</option>
+          <option>UK</option>
+          <option>Australia</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Skills</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" value="HTML" /> HTML</label>
+          <label><input type="checkbox" value="CSS" /> CSS</label>
+          <label><input type="checkbox" value="JavaScript" /> JavaScript</label>
+          <label><input type="checkbox" value="Python" /> Python</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Short Bio</label>
+        <textarea id="bio" rows="4" placeholder="Tell us something about yourself..."></textarea>
+      </div>
+
+      <input type="submit" class="submit-btn" value="Register" />
+      <div class="error" id="formError"></div>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const fname = document.getElementById("fname").value.trim();
+      const lname = document.getElementById("lname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const errorBox = document.getElementById("formError");
+
+      if (!fname || !lname || !email || !password || !gender) {
+        errorBox.textContent = "Please fill all required fields marked with *.";
+        return false;
+      }
+
+      const emailRegex = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!emailRegex.test(email)) {
+        errorBox.textContent = "Please enter a valid email.";
+        return false;
+      }
+
+      if (password.length < 6) {
+        errorBox.textContent = "Password must be at least 6 characters.";
+        return false;
+      }
+
+      errorBox.textContent = "";
+      alert("Form submitted successfully!");
+      return true;
+    }
+  </script>
+</body>
+</html>
