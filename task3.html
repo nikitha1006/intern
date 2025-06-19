@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creative Interactive Webpage</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f9f9f9, #e0f7fa);
+      color: #333;
+    }
+    header {
+      background: #00796b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    section {
+      max-width: 900px;
+      background: white;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #00796b;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 16px;
+    }
+
+    /* Carousel */
+    #carousel img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: opacity 0.5s ease;
+    }
+    .carousel-controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    button {
+      margin: 8px;
+      padding: 10px 16px;
+      font-size: 15px;
+      cursor: pointer;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+
+    /* Quiz */
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .quiz-container button {
+      display: block;
+      margin: 6px 0;
+      background-color: #eeeeee;
+      color: #333;
+    }
+    .quiz-container button:hover {
+      background-color: #c8e6c9;
+    }
+    #quizFeedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Weather */
+    #weatherResult {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #388e3c;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      margin: 4px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        font-size: 20px;
+      }
+      section {
+        margin: 15px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>🌐 Creative Interactive Webpage</header>
+
+<section>
+  <h2>📱 Responsive Design Demo</h2>
+  <p>This layout adapts to screen size. Resize the browser or open on mobile to see the changes in spacing and text size.</p>
+</section>
+
+<section>
+  <h2>🖼️ Animated Image Carousel</h2>
+  <div id="carousel">
+    <img id="carouselImage" src="https://source.unsplash.com/900x300/?nature,water" alt="Nature Image"/>
+  </div>
+  <div class="carousel-controls">
+    <button onclick="prevImage()">⬅ Prev</button>
+    <button onclick="nextImage()">Next ➡</button>
+  </div>
+</section>
+
+<section>
+  <h2>❓ Fun Quiz</h2>
+  <div class="quiz-container">
+    <div id="quizContent"></div>
+    <p id="quizFeedback"></p>
+  </div>
+</section>
+
+<section>
+  <h2>🌤️ Real-Time Weather</h2>
+  <p>Enter Latitude & Longitude:</p>
+  <input type="number" id="lat" placeholder="Latitude (e.g., 17.38)">
+  <input type="number" id="lon" placeholder="Longitude (e.g., 78.48)">
+  <button onclick="fetchWeather()">Get Weather</button>
+  <p id="weatherResult"></p>
+</section>
+
+<script>
+  // Carousel
+  const images = [
+    "https://source.unsplash.com/900x300/?nature,water",
+    "https://source.unsplash.com/900x300/?nature,forest",
+    "https://source.unsplash.com/900x300/?nature,mountain",
+    "https://source.unsplash.com/900x300/?nature,desert"
+  ];
+  let current = 0;
+  function showImage(index) {
+    const img = document.getElementById('carouselImage');
+    img.style.opacity = 0;
+    setTimeout(() => {
+      img.src = images[index];
+      img.style.opacity = 1;
+    }, 300);
+  }
+  function nextImage() {
+    current = (current + 1) % images.length;
+    showImage(current);
+  }
+  function prevImage() {
+    current = (current - 1 + images.length) % images.length;
+    showImage(current);
+  }
+
+  // Quiz
+  const quizData = [
+    {
+      question: "What does HTML stand for?",
+      options: ["HyperText Markup Language", "HighText Machine Language", "HyperTool Markup Language"],
+      correct: 0
+    },
+    {
+      question: "Which language is used for styling web pages?",
+      options: ["HTML", "CSS", "JavaScript"],
+      correct: 1
+    },
+    {
+      question: "Which of the following is not a JavaScript framework?",
+      options: ["React", "Vue", "C++"],
+      correct: 2
+    }
+  ];
+
+  let quizIndex = 0;
+  let score = 0;
+
+  function loadQuiz() {
+    if (quizIndex < quizData.length) {
+      const q = quizData[quizIndex];
+      const quizDiv = document.getElementById("quizContent");
+      let html = `<p class="question">${q.question}</p>`;
+      q.options.forEach((opt, idx) => {
+        html += `<button onclick="checkQuizAnswer(${idx})">${opt}</button>`;
+      });
+      quizDiv.innerHTML = html;
+      document.getElementById("quizFeedback").textContent = "";
+    } else {
+      document.getElementById("quizContent").innerHTML = `<p>🎉 You've completed the quiz!</p>`;
+      document.getElementById("quizFeedback").textContent = `Your Score: ${score}/${quizData.length}`;
+    }
+  }
+
+  function checkQuizAnswer(selected) {
+    const q = quizData[quizIndex];
+    const feedback = document.getElementById("quizFeedback");
+    if (selected === q.correct) {
+      feedback.textContent = "✅ Correct!";
+      score++;
+    } else {
+      feedback.textContent = `❌ Wrong. Correct answer: ${q.options[q.correct]}`;
+    }
+    quizIndex++;
+    setTimeout(loadQuiz, 1000);
+  }
+
+  loadQuiz();
+
+  // Weather API
+  function fetchWeather() {
+    const lat = document.getElementById("lat").value;
+    const lon = document.getElementById("lon").value;
+    if (!lat || !lon) {
+      document.getElementById("weatherResult").textContent = "⚠️ Enter valid coordinates.";
+      return;
+    }
+
+    const api = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    fetch(api)
+      .then(res => res.json())
+      .then(data => {
+        const temp = data.current_weather.temperature;
+        const wind = data.current_weather.windspeed;
+        document.getElementById("weatherResult").innerHTML = `🌡️ Temp: ${temp}°C<br>💨 Wind: ${wind} km/h`;
+      })
+      .catch(() => {
+        document.getElementById("weatherResult").textContent = "❌ Failed to fetch weather.";
+      });
+  }
+</script>
+
+</body>
+</html>
