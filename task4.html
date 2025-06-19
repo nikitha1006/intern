@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nikitha | Developer Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: url('https://source.unsplash.com/1600x400/?technology,code') no-repeat center/cover;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    header h1 {
+      position: relative;
+      z-index: 1;
+      font-size: 48px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      background: #00796b;
+      padding: 10px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      color: #00796b;
+      margin-bottom: 10px;
+    }
+
+    p, li {
+      line-height: 1.6;
+    }
+
+    /* Project Cards */
+    .project-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #f1f1f1;
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .card:hover {
+      background: #e0f2f1;
+      transform: scale(1.03);
+    }
+
+    /* To-Do List */
+    #taskInput {
+      width: 80%;
+    }
+
+    #taskList li {
+      background: #e0f7fa;
+    }
+
+    /* Product Cards */
+    #productList li {
+      background: #ede7f6;
+    }
+
+    footer {
+      text-align: center;
+      background: #004d40;
+      color: white;
+      padding: 20px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Nikitha Kadimisetti</h1>
+</header>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#todo">To-Do</a>
+  <a href="#products">Products</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section id="about">
+  <h2>👩‍💻 About Me</h2>
+  <p>I’m a passionate second-year B.Tech student at Vishnu Institute of Technology with strong skills in Java, Python, web development, and machine learning. I love building creative, real-world projects that solve meaningful problems. I enjoy learning, exploring tech trends, and sharing ideas with the community.</p>
+</section>
+
+<section id="projects">
+  <h2>🚀 Projects</h2>
+  <div class="project-cards">
+    <div class="card">
+      <h3>To-Do List (localStorage)</h3>
+      <p>A sleek app that allows users to add and remove tasks with data saved in the browser using localStorage.</p>
+      <a href="#todo">View Demo →</a>
+    </div>
+    <div class="card">
+      <h3>Product Listing</h3>
+      <p>Filter and sort products dynamically by price or rating. Interactive UI for better shopping experience simulation.</p>
+      <a href="#products">View Demo →</a>
+    </div>
+    <div class="card">
+      <h3>Quiz App</h3>
+      <p>An interactive JavaScript quiz for learning fun facts, with instant feedback and score tracking.</p>
+      <a href="#">Coming Soon</a>
+    </div>
+  </div>
+</section>
+
+<section id="todo">
+  <h2>📝 To-Do List</h2>
+  <input type="text" id="taskInput" placeholder="Add a task..." />
+  <button onclick="addTask()">Add Task</button>
+  <ul id="taskList"></ul>
+</section>
+
+<section id="products">
+  <h2>🛍️ Product Listing</h2>
+  <label>Filter by Category:</label>
+  <select id="filter" onchange="filterProducts()">
+    <option value="all">All</option>
+    <option value="electronics">Electronics</option>
+    <option value="fashion">Fashion</option>
+  </select>
+
+  <label>Sort by:</label>
+  <select id="sort" onchange="filterProducts()">
+    <option value="rating">Rating</option>
+    <option value="price">Price</option>
+  </select>
+
+  <ul id="productList"></ul>
+</section>
+
+<section id="contact">
+  <h2>📬 Contact</h2>
+  <p>Email: nikitha@example.com</p>
+  <p>GitHub: <a href="https://github.com/nikitha" target="_blank">github.com/nikitha</a></p>
+  <p>Location: Visakhapatnam, India</p>
+</section>
+
+<footer>
+  &copy; 2025 Nikitha Kadimisetti | Designed with 💚 Passion & Code
+</footer>
+
+<script>
+  // To-Do List Logic
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const task = input.value.trim();
+    if (!task) return;
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    input.value = '';
+    displayTasks();
+  }
+
+  function displayTasks() {
+    const list = document.getElementById('taskList');
+    if (!list) return;
+    list.innerHTML = '';
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach((task, index) => {
+      const li = document.createElement('li');
+      li.textContent = task;
+      li.onclick = () => {
+        tasks.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        displayTasks();
+      };
+      list.appendChild(li);
+    });
+  }
+  displayTasks();
+
+  // Product Listing Logic
+  const sampleProducts = [
+    { name: "Smartphone", category: "electronics", price: 500, rating: 4.5 },
+    { name: "Jeans", category: "fashion", price: 40, rating: 4.0 },
+    { name: "Laptop", category: "electronics", price: 1200, rating: 4.8 },
+    { name: "T-Shirt", category: "fashion", price: 15, rating: 3.8 }
+  ];
+
+  function filterProducts() {
+    let filtered = [...sampleProducts];
+    const category = document.getElementById('filter').value;
+    const sort = document.getElementById('sort').value;
+
+    if (category !== 'all') {
+      filtered = filtered.filter(p => p.category === category);
+    }
+
+    if (sort === 'price') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else {
+      filtered.sort((a, b) => b.rating - a.rating);
+    }
+
+    const list = document.getElementById('productList');
+    list.innerHTML = '';
+    filtered.forEach(p => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${p.name}</strong><br>₹${p.price} | ⭐ ${p.rating}`;
+      list.appendChild(li);
+    });
+  }
+
+  filterProducts(); // Initial display
+</script>
+
+</body>
+</html>
